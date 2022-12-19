@@ -88,10 +88,10 @@ public class App
             if (rset.next())
             {
                 City cty = new City();
-                cty.ID = rset.getInt("ID");
-                cty.Name = rset.getString("Name");
-                cty.District = rset.getString("District");
-                cty.Population = rset.getInt("Population");
+                cty.setID(rset.getInt("ID"));
+                cty.setName(rset.getString("Name"));
+                cty.setDistrict(rset.getString("District"));
+                cty.setPopulation(rset.getInt("Population"));
                 return cty;
             }
             else
@@ -111,10 +111,10 @@ public class App
         if (cty != null)
         {
             System.out.println(
-                    cty.ID + " "
-                            + cty.Name + " "
-                            + cty.District + " "
-                            + cty.Population + "\n");
+                    cty.getID() + " "
+                            + cty.getName() + " "
+                            + cty.getDistrict() + " "
+                            + cty.getPopulation() + "\n");
         }
     }
 

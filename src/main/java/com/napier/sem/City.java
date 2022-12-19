@@ -5,11 +5,43 @@ package com.napier.sem;
  */
 public class City
 {
-    public int ID;
+    private int ID;
 
-    public String Name;
+    private String Name;
 
-    public String District;
+    private String District;
 
-    public int Population;
+    private int Population;
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getDistrict() {
+        return District;
+    }
+
+    public void setDistrict(String district) {
+        District = district;
+    }
+
+    public int getPopulation() {
+        return Population;
+    }
+
+    public void setPopulation(int population) {
+        Population = population;
+    }
 }
