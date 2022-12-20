@@ -1,13 +1,15 @@
 package com.napier.sem;
 
 /**
- * Represents an employee
+ * Represents an city
  */
 public class City
 {
     private int ID;
 
     private String Name;
+
+    private String CountryCode;
 
     private String District;
 
@@ -28,6 +30,15 @@ public class City
     public void setName(String name) {
         Name = name;
     }
+
+    public String getCountryCode() {
+        return CountryCode;
+    }
+
+    public void setCountryCode(String code) {
+        CountryCode = code;
+    }
+
 
     public String getDistrict() {
         return District;

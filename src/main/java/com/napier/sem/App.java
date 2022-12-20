@@ -2,6 +2,8 @@ package com.napier.sem;
 
 import java.sql.*;
 
+import java.util.ArrayList;
+
 public class App
 {
     /**
@@ -70,7 +72,60 @@ public class App
     }
 
 
-    public City getCity(int ID)
+//    public City getCity(int ID)
+//    {
+//        try
+//        {
+//            // Create an SQL statement
+//            Statement stmt = con.createStatement();
+//            // Create string for SQL statement
+//            String strSelect =
+//                    "SELECT ID, Name, District, Population "
+//                            + "FROM city "
+//                            + "WHERE ID = " + ID;
+//            // Execute SQL statement
+//            ResultSet rset = stmt.executeQuery(strSelect);
+//            // Return new employee if valid.
+//            // Check one is returned
+//            if (rset.next())
+//            {
+//                City cty = new City();
+//                cty.setID(rset.getInt("ID"));
+//                cty.setName(rset.getString("Name"));
+//                cty.setDistrict(rset.getString("District"));
+//                cty.setPopulation(rset.getInt("Population"));
+//                return cty;
+//            }
+//            else
+//                return null;
+//        }
+//        catch (Exception e)
+//        {
+//            System.out.println(e.getMessage());
+//            System.out.println("Failed to get City details");
+//            return null;
+//        }
+//    }
+//
+//
+//    public void displayCity(City cty)
+//    {
+//        if (cty != null)
+//        {
+//            System.out.println(
+//                    cty.getID() + " "
+//                            + cty.getName() + " "
+//                            + cty.getDistrict() + " "
+//                            + cty.getPopulation() + "\n");
+//        }
+//    }
+
+
+    /**
+     * Gets all the current employees and salaries.
+     * @return A list of all employees and salaries, or null if there is an error.
+     */
+    public ArrayList<City> getAllCities()
     {
         try
         {
@@ -78,43 +133,48 @@ public class App
             Statement stmt = con.createStatement();
             // Create string for SQL statement
             String strSelect =
-                    "SELECT ID, Name, District, Population "
-                            + "FROM city "
-                            + "WHERE ID = " + ID;
+                    "SELECT city.Name, city.CountryCode, city.Population "
+                            + "FROM city, country "
+                            + "WHERE city.CountryCode = country.Code "
+                            + "ORDER BY city.Population DESC ";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
-            // Return new employee if valid.
-            // Check one is returned
-            if (rset.next())
+            // Extract employee information
+            ArrayList<City> cities = new ArrayList<City>();
+            while (rset.next())
             {
                 City cty = new City();
-                cty.setID(rset.getInt("ID"));
                 cty.setName(rset.getString("Name"));
-                cty.setDistrict(rset.getString("District"));
+                cty.setCountryCode(rset.getString("CountryCode"));
                 cty.setPopulation(rset.getInt("Population"));
-                return cty;
+                cities.add(cty);
             }
-            else
-                return null;
+            return cities;
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            System.out.println("Failed to get City details");
+            System.out.println("Failed to get city details");
             return null;
         }
     }
 
 
-    public void displayCity(City cty)
+    /**
+     * Prints a list of employees.
+     * @param cities The list of employees to print.
+     */
+    public void printCities(ArrayList<City> cities)
     {
-        if (cty != null)
+        // Print header
+        System.out.println(String.format("%-50s %-30s %s", "Name", "CountryCode", "Population"));
+        // Loop over all employees in the list
+        for (City cty : cities)
         {
-            System.out.println(
-                    cty.getID() + " "
-                            + cty.getName() + " "
-                            + cty.getDistrict() + " "
-                            + cty.getPopulation() + "\n");
+            String cty_string =
+                    String.format("%-50s %-30s %s",
+                            cty.getName(), cty.getCountryCode(), cty.getPopulation());
+            System.out.println(cty_string);
         }
     }
 
@@ -126,11 +186,13 @@ public class App
         // Connect to database
         a.connect();
 
-        City cty = a.getCity(1);
-        // Display results
-        a.displayCity(cty);
+        ArrayList<City> cities = a.getAllCities();
+
+        // Extract employee salary information
+        a.printCities(cities);
 
         // Disconnect from database
         a.disconnect();
     }
+
 }
