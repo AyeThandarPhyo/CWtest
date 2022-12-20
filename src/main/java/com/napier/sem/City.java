@@ -5,6 +5,17 @@ package com.napier.sem;
  */
 public class City
 {
+
+    private Country country;
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
     private int ID;
 
     private String Name;

@@ -133,10 +133,10 @@ public class App
             Statement stmt = con.createStatement();
             // Create string for SQL statement
             String strSelect =
-                    "SELECT city.Name, city.CountryCode, city.Population "
+                    "SELECT city.Name, country.Name, country.Continent, city.District, city.Population "
                             + "FROM city, country "
                             + "WHERE city.CountryCode = country.Code "
-                            + "ORDER BY city.Population DESC ";
+                            + "ORDER BY country.Continent ASC, city.Population DESC ";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
             // Extract employee information
@@ -144,9 +144,13 @@ public class App
             while (rset.next())
             {
                 City cty = new City();
-                cty.setName(rset.getString("Name"));
-                cty.setCountryCode(rset.getString("CountryCode"));
-                cty.setPopulation(rset.getInt("Population"));
+                Country cntry = new Country();
+                cty.setName(rset.getString(1));
+                cntry.setName(rset.getString(2));
+                cntry.setContinent(rset.getString(3));
+                cty.setDistrict(rset.getString(4));
+                cty.setPopulation(rset.getInt(5));
+                cty.setCountry(cntry);
                 cities.add(cty);
             }
             return cities;
@@ -167,13 +171,13 @@ public class App
     public void printCities(ArrayList<City> cities)
     {
         // Print header
-        System.out.println(String.format("%-50s %-30s %s", "Name", "CountryCode", "Population"));
+        System.out.println(String.format("%-30s %-30s %-20s %-20s %s", "Name", "Country", "Continent", "District", "Population"));
         // Loop over all employees in the list
         for (City cty : cities)
         {
             String cty_string =
-                    String.format("%-50s %-30s %s",
-                            cty.getName(), cty.getCountryCode(), cty.getPopulation());
+                    String.format("%-30s %-30s %-20s %-20s %s",
+                            cty.getName(), cty.getCountry().getName(), cty.getCountry().getContinent(), cty.getDistrict(), cty.getPopulation());
             System.out.println(cty_string);
         }
     }
